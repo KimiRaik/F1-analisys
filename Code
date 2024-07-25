@@ -1,0 +1,127 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+df = pd.read_csv('formula1_2019season_tracks.csv')
+df
+
+df.shape ###(21, 13)
+df.info  ###<bound method DataFrame.info of           Country               City                        Circuit Name  \
+0       Australia          Melbourne                 Albert Park Circuit   
+1         Bahrain             Sakhir       Bahrain International Circuit   
+2           China           Shanghai      Shanghai International Circuit   
+3      Azerbaijan               Baku                   Baku City Circuit   
+4           Spain          Catalunya      Circuit de Barcelona-Catalunya   
+5          Monaco        Monte Carlo                   Circuit de Monaco   
+6          Canada           Montréal           Circuit Gilles-Villeneuve   
+7          France       La Castellet                 Circuit Paul Ricard   
+8         Austria          Spielberg                       Red Bull Ring   
+9   Great Britain        Silverstone                 Silverstone Circuit   
+10        Germany         Hockenheim                      Hockenheimring   
+11        Hungary           Budapest                         Hungaroring   
+12        Belgium  Spa-Francorchamps        Circuit de Spa-Francorchamps   
+13          Italy              Monza           Autodromo Nazionale Monza   
+14      Singapore          Singapore           Marina Bay Street Circuit   
+15         Russia              Sochi                      Sochi Autodrom   
+16          Japan             Suzuka  Suzuka International Racing Course   
+17         Mexico        Mexico City        Autodromo Hermanos Rodriguez   
+18  United States             Austin             Circuit of The Americas   
+19         Brazil          Sao Paulo          Autodromo Jose Carlos Pace   
+20      Abu Dhabi         Yas Island                  Yas Marina Circuit   
+
+           Date  First Grand Prix  Number of Laps  Circuit Length  \
+0   17 Mar 2019              1996              58           5.303   
+1   31 Mar 2019              2004              57           5.412   
+2   14 Apr 2019              2004              56           5.451   
+3   28 Apr 2019              2016              51           6.003   
+4   12 May 2019              1991              66           4.655   
+5   26 May 2019              1950              78           3.337   
+6    9 Jun 2019              1978              70           4.361   
+7   23 Jun 2019              1971              53           5.842   
+8   30 Jun 2019              1970              71           4.318   
+9   14 Jul 2019              1950              52           5.891   
+10  28 Jul 2019              1970              67           4.574   
+11   4 Aug 2019              1986              70           4.381   
+12   1 Sep 2019              1950              44           7.004   
+13   8 Sep 2019              1950              53           5.793   
+14  22 Sep 2019              2008              61           5.063   
+15  29 Sep 2019              2014              53           5.848   
+16  13 Oct 2019              1987              53           5.807   
+17  27 Oct 2019              1963              71           4.304   
+18   3 Nov 2019              2012              56           5.513   
+19  17 Nov 2019              1973              71           4.309   
+20   1 Dec 2019              2009              55           5.554   
+
+    Race Distance Lap Record        Record Owner  Record Year  Turns  \
+0         307.574   1:24.125  Michael Schumacher         2004     16   
+1         308.238   1:31.447    Pedro de la Rosa         2005     15   
+2         305.066   1:32.238  Michael Schumacher         2004     16   
+3         306.049   1:43.009     Charles Leclerc         2019     20   
+4         307.104   1:18.441    Daniel Ricciardo         2018     16   
+5         260.286   1:14.260      Max Verstappen         2018     19   
+6         305.270   1:13.078     Valtteri Bottas         2019     14   
+7         309.690   1:32.740    Sebastian Vettel         2019     15   
+8         306.452   1:06.957      Kimi Raikkönen         2018     10   
+9         306.198   1:27.369      Lewis Hamilton         2019     18   
+10        306.458   1:13.780      Kimi Raikkönen         2004     17   
+11        306.630   1:17.103      Max Verstappen         2019     14   
+12        308.052   1:46.286     Valtteri Bottas         2018     19   
+13        306.720   1:21.046  Rubens Barrichello         2004     11   
+14        308.706   1:41.905     Kevin Magnussen         2018     23   
+15        309.745   1:35.761      Lewis Hamilton         2019     18   
+16        307.471   1:30.983      Lewis Hamilton         2019     18   
+17        305.354   1:18.741     Valtteri Bottas         2018     17   
+18        308.405   1:36.169     Charles Leclerc         2019     20   
+19        305.909   1:10.540     Valtteri Bottas         2018     15   
+20        305.355   1:39.283      Lewis Hamilton         2019     21   
+
+    DRS Zones  
+0           3  
+1           3  
+2           2  
+3           2  
+4           2  
+5           1  
+6           3  
+7           2  
+8           3  
+9           2  
+10          2  
+11          2  
+12          2  
+13          2  
+14          3  
+15          2  
+16          1  
+17          3  
+18          2  
+19          2  
+20          2  >
+
+
+
+
+df.plot(kind='scatter', x = 'Number of Laps', y = 'Circuit Length', figsize = (6, 6))
+plt.savefig('laps.png')
+
+
+
+
+df_clean = df[
+        (df['Circuit Length'] >= df['Circuit Length'].quantile(0.025)) &
+        (df['Circuit Length'] <= df['Circuit Length'].quantile(0.975))
+    ]
+
+plt.figure(figsize=(6, 3))
+plt.plot(df_clean.index, df_clean['Circuit Length'], color='r', linewidth=1)
+plt.title('Circuit Lenght')
+plt.xlabel('Lap Record')
+plt.ylabel('Circuit Length')
+plt.grid(True)
+plt.show()
+plt.savefig('Circuit.png')
+
+
+
+
+
